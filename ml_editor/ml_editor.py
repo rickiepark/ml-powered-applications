@@ -248,8 +248,7 @@ def get_suggestions(sentence_list):
         number_of_syllables, number_of_words, number_of_sentences
     )
 
-    flesch = "%d개 음절, %.2f 플레시 점수: %s" % (
-        number_of_syllables,
+    flesch = "플레시 점수 %.2f: %s" % (
         flesch_score,
         get_reading_level_from_flesch(flesch_score),
     )
