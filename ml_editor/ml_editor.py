@@ -16,8 +16,8 @@ logger.addHandler(console_out)
 
 def parse_arguments():
     """
-    Simple argument parser for the command line
-    :return: The text to be edited
+    간단한 명령줄 매개변수 파서
+    :return: 수정할 텍스트
     """
     parser = argparse.ArgumentParser(description="Receive text to be edited")
     parser.add_argument("text", metavar="input text", type=str)
@@ -27,19 +27,19 @@ def parse_arguments():
 
 def clean_input(text):
     """
-    Text sanitization function
-    :param text: User input text
-    :return: Sanitized text, without non ascii characters
+    텍스트 정제 함수
+    :param text: 사용자가 입력한 텍스트
+    :return: ASCII 이외의 문자를 제거한 정제된 텍스트
     """
-    # To keep things simple at the start, let's only keep ASCII characters
+    # 간단하게 시작하기 위해서 ASCII 문자만 사용합니다
     return str(text.encode().decode("ascii", errors="ignore"))
 
 
 def preprocess_input(text):
     """
-    Tokenizes text that has been sainitized
-    :param text: Sanitized text
-    :return: Text ready to be fed to analysis, by having sentences and words tokenized
+    정제된 텍스트를 토큰화합니다
+    :param text: 정제된 텍스트
+    :return: 문장과 단어로 토큰화하여 분석에 투입할 준비를 마친 텍스트
     """
     sentences = nltk.sent_tokenize(text)
     tokens = [nltk.word_tokenize(sentence) for sentence in sentences]
@@ -68,19 +68,19 @@ def get_reading_level_from_flesch(flesch_score):
     :return: A reading level and difficulty for a given flesch score
     """
     if flesch_score < 30:
-        return "Very difficult to read"
+        return "매우 읽기 어려움"
     elif flesch_score < 50:
-        return "Difficult to read"
+        return "읽기 어려움"
     elif flesch_score < 60:
-        return "Fairly difficult to read"
+        return "약간 읽기 어려움"
     elif flesch_score < 70:
-        return "Plain English"
+        return "보통"
     elif flesch_score < 80:
-        return "Fairly easy to read"
+        return "약간 읽기 쉬움"
     elif flesch_score < 90:
-        return "Easy to read"
+        return "읽기 쉬움"
     else:
-        return "Very easy to read"
+        return "매우 읽기 쉬움"
 
 
 def compute_average_word_length(tokens):
@@ -187,9 +187,9 @@ def count_total_words(sentence_list):
 
 def get_suggestions(sentence_list):
     """
-    Returns a string containing our suggestions
-    :param sentence_list: a list of sentences, each being a list of words
-    :return: suggestions to improve the input
+    추천을 포함한 문자열을 반환합니다.
+    :param sentence_list: 문장의 리스트. 각 문장은 단어의 리스트입니다.
+    :return: 입력 텍스트를 개선하기 위한 추천
     """
     told_said_usage = sum(
         (count_word_usage(tokens, ["told", "said"]) for tokens in sentence_list)
@@ -215,7 +215,7 @@ def get_suggestions(sentence_list):
         )
     )
     result_str = ""
-    adverb_usage = "Adverb usage: %s told/said, %s but/and, %s wh adverbs" % (
+    adverb_usage = "단어 사용량: %s told/said, %s but/and, %s wh-접속사" % (
         told_said_usage,
         but_and_usage,
         wh_adverbs_usage,
@@ -224,7 +224,7 @@ def get_suggestions(sentence_list):
     average_word_length = compute_total_average_word_length(sentence_list)
     unique_words_fraction = compute_total_unique_words_fraction(sentence_list)
 
-    word_stats = "Average word length %.2f, fraction of unique words %.2f" % (
+    word_stats = "평균 단어 길이 %.2f, 고유한 단어의 비율 %.2f" % (
         average_word_length,
         unique_words_fraction,
     )
@@ -236,7 +236,7 @@ def get_suggestions(sentence_list):
     number_of_words = count_total_words(sentence_list)
     number_of_sentences = len(sentence_list)
 
-    syllable_counts = "%d syllables, %d words, %d sentences" % (
+    syllable_counts = "%d개 음절, %d개 단어, %d개 문장" % (
         number_of_syllables,
         number_of_words,
         number_of_sentences,
@@ -248,7 +248,7 @@ def get_suggestions(sentence_list):
         number_of_syllables, number_of_words, number_of_sentences
     )
 
-    flesch = "%d syllables, %.2f flesch score: %s" % (
+    flesch = "%d개 음절, %.2f 플레시 점수: %s" % (
         number_of_syllables,
         flesch_score,
         get_reading_level_from_flesch(flesch_score),
