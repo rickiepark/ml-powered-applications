@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 import pandas as pd
-from sklearn.externals import joblib
+import joblib
 from scipy.sparse import vstack, hstack
 
 from ml_editor.data_processing import add_v1_features
