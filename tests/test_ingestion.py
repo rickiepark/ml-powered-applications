@@ -30,7 +30,7 @@ ACCEPTABLE_TEXT_LENGTH_MEANS = pd.Interval(left=20, right=2000)
 
 def get_fixture_df():
     """
-    Use parser to return DataFrame
+    파서를 사용해 데이터프레임을 반환합니다
     :return:
     """
     curr_path = Path(os.path.dirname(__file__))
@@ -39,7 +39,7 @@ def get_fixture_df():
 
 def test_parser_returns_dataframe():
     """
-    Tests that our parser runs and returns a DataFrame
+    파서가 데이터프레임을 반환하는지 테스트합니다.
     """
     df = get_fixture_df()
     assert isinstance(df, pd.DataFrame)
@@ -47,7 +47,7 @@ def test_parser_returns_dataframe():
 
 def test_feature_columns_exist():
     """
-    Validate that all required columns are present
+    필수 열이 모두 들어 있는지 검사합니다.
     """
     df = get_fixture_df()
     for col in REQUIRED_COLUMNS:
@@ -56,7 +56,7 @@ def test_feature_columns_exist():
 
 def test_features_not_all_null():
     """
-    Validate that no features are missing every value
+    누락된 값을 포함한 특성이 있는지 검사합니다.
     """
     df = get_fixture_df()
     for col in REQUIRED_COLUMNS:

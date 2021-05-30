@@ -121,11 +121,10 @@ def get_vectorized_inputs_and_label(df):
 
 def get_feature_vector_and_label(df, feature_names):
     """
-    Generate input and output vectors using the vectors feature and
-     the given feature names
-    :param df: input DataFrame
-    :param feature_names: names of feature columns (other than vectors)
-    :return: feature array and label array
+    벡터 특성과 다른 특성을 사용해 입력과 출력 벡터를 만듭니다.
+    :param df: 입력 데이터프레임
+    :param feature_names: (‘vectors’ 열을 제외한) 특성 열 이름
+    :return: 특성 배열과 레이블 배열
     """
     vec_features = vstack(df["vectors"])
     num_features = df[feature_names].astype(float)

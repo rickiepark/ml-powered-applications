@@ -72,9 +72,9 @@ def test_model_prediction_dimensions(
     )
 
     probas = trained_v1_model.predict_proba(features)
-    # the model makes one prediction per input example
+    # 모델이 입력 샘플마다 하나의 예측을 만듭니다.
     assert probas.shape[0] == features.shape[0]
-    # the model predicts probabilities for two classes
+    # 모델이 두 개의 클래스에 대한 확률을 예측합니다.
     assert probas.shape[1] == 2
 
 
@@ -90,12 +90,12 @@ def test_model_proba_values(
     )
 
     probas = trained_v1_model.predict_proba(features)
-    # the model's probabilities are between 0 and 1
+    # 모델의 확률은 0과 1 사이입니다.
     assert (probas >= 0).all() and (probas <= 1).all()
 
 
 def test_model_predicts_no_on_bad_question():
     input_text = "This isn't even a question. We should score it poorly"
     is_question_good = get_model_predictions_for_input_texts([input_text])
-    # The model classifies the question as poor
+    # 모델이 이 샘플을 나쁜 질문으로 분류해야 합니다.
     assert not is_question_good[0]
