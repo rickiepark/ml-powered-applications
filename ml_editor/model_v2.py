@@ -56,8 +56,8 @@ curr_path = Path(os.path.dirname(__file__))
 
 model_path = Path("../models/model_2.pkl")
 vectorizer_path = Path("../models/vectorizer_2.pkl")
-VECTORIZER = joblib.load(curr_path / vectorizer_path)
-MODEL = joblib.load(curr_path / model_path)
+VECTORIZER = None
+MODEL = None
 
 
 def count_each_pos(df):
@@ -166,7 +166,11 @@ def get_model_probabilities_for_input_texts(text_array):
     :param text_array: array of questions to be scored
     :return: array of predicted probabilities
     """
-    global FEATURE_ARR, VECTORIZER, MODEL
+    global FEATURE_ARR, VECTORIZER, MODEL, curr_path, vectorizer_path, model_path
+    if VECTORIZER == None:
+        VECTORIZER = joblib.load(curr_path / vectorizer_path)
+    if MODEL == None:
+        MODEL = joblib.load(curr_path / model_path)
     vectors = VECTORIZER.transform(text_array)
     text_ser = pd.DataFrame(text_array, columns=["full_text"])
     text_ser = add_v2_text_features(text_ser.copy())
