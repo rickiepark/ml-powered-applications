@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 import spacy
-from sklearn.externals import joblib
+import joblib
 from tqdm import tqdm
 import pandas as pd
 import nltk
@@ -196,7 +196,7 @@ def get_pos_score_from_text(input_text):
     positive_proba = get_question_score_from_input(input_text)
     output_str = (
         """
-        Question score (0 is worst, 1 is best): 
+        Question score (0 is worst, 1 is best):
         <br/>
         %s
     """

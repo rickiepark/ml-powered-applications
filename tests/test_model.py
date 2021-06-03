@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 # Needed for pytest to resolve imports properly
-from sklearn.externals import joblib
+import joblib
 
 from ml_editor.data_ingestion import parse_xml_to_csv
 from ml_editor.data_processing import (

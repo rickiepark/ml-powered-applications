@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 import spacy
-from sklearn.externals import joblib
+import joblib
 from tqdm import tqdm
 import pandas as pd
 import nltk
@@ -94,7 +94,7 @@ def get_recommendation_and_prediction_from_text(input_text, num_feats=10):
      %s
     <br/>
     <br/>
-    
+
     Recommendations (ordered by importance):
     <br/>
     <br/>
