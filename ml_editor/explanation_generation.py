@@ -6,36 +6,36 @@ from lime.lime_tabular import LimeTabularExplainer
 from ml_editor.data_processing import get_split_by_author
 
 FEATURE_DISPLAY_NAMES = {
-    "num_questions": "frequency of question marks",
-    "num_periods": "frequency of periods",
-    "num_commas": "frequency of commas",
-    "num_exclam": "frequency of exclamation points",
-    "num_quotes": "frequency of quotes",
-    "num_colon": "frequency of colons",
-    "num_semicolon": "frequency of semicolons",
-    "num_stops": "frequency of stop words",
-    "num_words": "word count",
-    "num_chars": "word count",
-    "num_diff_words": "vocabulary diversity",
-    "avg_word_len": "vocabulary complexity",
-    "polarity": "positivity of emotional sentiment",
-    "ADJ": "frequency of adjectives",
-    "ADP": "frequency of adpositions",
-    "ADV": "frequency of adverbs",
-    "AUX": "frequency of auxiliary verbs",
-    "CONJ": "frequency of coordinating conjunctions",
-    "DET": "frequency of determiners",
-    "INTJ": "frequency of interjections",
-    "NOUN": "frequency of nouns",
-    "NUM": "frequency of numerals",
-    "PART": "frequency of particles",
-    "PRON": "frequency of pronouns",
-    "PROPN": "frequency of proper nouns",
-    "PUNCT": "frequency of punctuation",
-    "SCONJ": "frequency of subordinating conjunctions",
-    "SYM": "frequency of symbols",
-    "VERB": "frequency of verbs",
-    "X": "frequency of other words",
+    "num_questions": "물음표 빈도",
+    "num_periods": "마침표 빈도",
+    "num_commas": "쉼표 빈도",
+    "num_exclam": "느낌표 빈도",
+    "num_quotes": "따옴표 빈도",
+    "num_colon": "콜론 빈도",
+    "num_semicolon": "세미콜론 빈도",
+    "num_stops": "불용어 빈도",
+    "num_words": "단어 개수",
+    "num_chars": "문자 개수",
+    "num_diff_words": "어휘 다양성",
+    "avg_word_len": "평균 단어 길이",
+    "polarity": "긍정적인 감성",
+    "ADJ": "형용사 빈도",
+    "ADP": "전치사 빈도",
+    "ADV": "부사 빈도",
+    "AUX": "조동사 빈도",
+    "CONJ": "접속사 빈도",
+    "DET": "한정사 빈도",
+    "INTJ": "감탄사 빈도",
+    "NOUN": "명사 빈도",
+    "NUM": "숫자 빈도",
+    "PART": "불변화사 빈도",
+    "PRON": "대명사 빈도",
+    "PROPN": "고유 명사 빈도",
+    "PUNCT": "구두점 빈도",
+    "SCONJ": "종속 접속사 빈도",
+    "SYM": "기호 빈도",
+    "VERB": "동사 빈도",
+    "X": "다른 단어의 빈도",
 }
 
 POS_NAMES = {
@@ -140,8 +140,8 @@ def parse_explanations(exp_list):
     for feat_bound, impact in exp_list:
         conditions = feat_bound.split(" ")
 
-        # We ignore doubly bounded conditions , e.g. 1 <= a < 3 because
-        # they are harder to formulate as a recommendation
+        # 추천으로 표현하기 힘들기 때문에
+        # 1 <= a < 3 와 같은 이중 경계 조건은 무시합니다
         if len(conditions) == 3:
             feat_name, order, threshold = conditions
 
