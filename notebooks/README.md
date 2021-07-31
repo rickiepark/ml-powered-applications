@@ -1,64 +1,61 @@
-This folder contains notebooks showcasing concepts covered in the book.
-Most of the examples only use one of the subfolders in archive
-(the one that contains data for writers.stackexchange.com).
+노트북 폴더에는 책에서 다루는 개념을 위한 예제 코드를 담고 있습니다. 대부분의 예제는 아카이브(writers.stackexchange.com 데이터)에 있는 서브폴더 중 하나만 사용합니다.
 
-I've included a processed version of the data as a `.csv` for convenience.
+번거로움을 줄이기 위해 전처리된 데이터를 `.csv` 파일로 포함시켰습니다.
 
-If you want to generate this data yourself, or generate it for another subfolder,
-you should:
+직접 이 데이터를 생성하고 싶거나 다른 폴더에 데이터를 생성하고 싶다면 다음을 참고하세요:
 
-- Download a subfolder from the stackoverflow [archives][archives]
+- 스택익스체인지 [아카이브][archives]에서 한 서브폴더를 다운로드합니다.
 
-- Run `parse_xml_to_csv` to convert it to a DataFrame
+- `parse_xml_to_csv`을 실행해 데이터프레임으로 변환합니다.
 
-- Run `generate_model_text_features` to generate a DataFrames with precomputed features
+- `generate_model_text_features`을 실행해 미리 계산된 특성을 포함한 데이터프레임을 생성합니다.
 
 [archives]: https://archive.org/details/stackexchange
 
-The notebooks belong to a few categories of concepts, described below.
+이 노트북들은 다음과 같은 몇 개의 카테고리로 나눌 수 있습니다.
 
-### Data Exploration and Transformation
+### 데이터 탐색과 변환
 
-- [Dataset Exploration][DatasetExploration]
-- [Splitting Data][SplittingData]
-- [Vectorizing Text][VectorizingText]
-- [Clustering Data][ClusteringData]
-- [Tabular Data Vectorization][TabularDataVectorization]
-- [Exploring Data To Generate Features][ExploringDataToGenerateFeatures]
+- [데이터셋 탐색][DatasetExploration]
+- [데이터 분할][SplittingData]
+- [텍스트 벡터화][VectorizingText]
+- [데이터 군집][ClusteringData]
+- [표 데이터 벡터화][TabularDataVectorization]
+- [특성 생성을 위한 데이터 탐색][ExploringDataToGenerateFeatures]
 
-### Initial Model Training and Performance Analysis
+### 초기 모델 훈련과 성능 분석
 
-- [Train Simple Model][TrainSimpleModel]
-- [Comparing Data To Predictions][ComparingDataToPredictions]
-- [Top K][TopK]
-- [Feature Importance][FeatureImportance]
-- [Black Box Explainer][BlackBoxExplainer]
+- [간단한 모델 훈련][TrainSimpleModel]
+- [데이터와 예측 비교Comparing Data To Predictions][ComparingDataToPredictions]
+- [탑 K][TopK]
+- [특성 중요도][FeatureImportance]
+- [블랙 박스 설명 도구][BlackBoxExplainer]
 
-### Improving the Model
+### 모델 향상
 
-- [Second Model][SecondModel]
-- [Third Model][ThirdModel]
+- [두 번째 모델][SecondModel]
+- [세 번째 모델][ThirdModel]
 
-### Model Comparison
+### 모델 비교
 
-- [Comparing Models][ComparingModels]
+- [모델 비교][ComparingModels]
 
-### Generating Suggestions from Models
+### 모델을 사용한 추천 생성
 
-- [Generating Recommendations][GeneratingRecommendations]
+- [추천 생성][GeneratingRecommendations]
 
-[BlackBoxExplainer]: ./black_box_explainer.ipynb
-[ClusteringData]: ./clustering_data.ipynb
-[ComparingDataToPredictions]: ./comparing_data_to_predictions.ipynb
-[ComparingModels]: ./comparing_models.ipynb
-[DatasetExploration]: ./dataset_exploration.ipynb
-[ExploringDataToGenerateFeatures]: ./exploring_data_to_generate_features.ipynb
-[FeatureImportance]: ./feature_importance.ipynb
-[GeneratingRecommendations]: ./generating_recommendations.ipynb
-[SecondModel]: ./second_model.ipynb
-[SplittingData]: ./splitting_data.ipynb
-[TabularDataVectorization]: ./tabular_data_vectorization.ipynb
-[ThirdModel]: ./third_model.ipynb
-[TopK]: ./top_k.ipynb
-[TrainSimpleModel]: ./train_simple_model.ipynb
-[VectorizingText]: ./vectorizing_text.ipynb
+[BlackBoxExplainer]: ./notebooks/black_box_explainer.ipynb
+[ClusteringData]: ./notebooks/clustering_data.ipynb
+[ComparingDataToPredictions]: ./notebooks/comparing_data_to_predictions.ipynb
+[ComparingModels]: ./notebooks/comparing_models.ipynb
+[DatasetExploration]: ./notebooks/dataset_exploration.ipynb
+[ExploringDataToGenerateFeatures]: ./notebooks/exploring_data_to_generate_features.ipynb
+[FeatureImportance]: ./notebooks/feature_importance.ipynb
+[GeneratingRecommendations]: ./notebooks/generating_recommendations.ipynb
+[SecondModel]: ./notebooks/second_model.ipynb
+[SplittingData]: ./notebooks/splitting_data.ipynb
+[TabularDataVectorization]: ./notebooks/tabular_data_vectorization.ipynb
+[ThirdModel]: ./notebooks/third_model.ipynb
+[TopK]: ./notebooks/top_k.ipynb
+[TrainSimpleModel]: ./notebooks/train_simple_model.ipynb
+[VectorizingText]: ./notebooks/vectorizing_text.ipynb
