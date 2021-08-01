@@ -1,4 +1,3 @@
-# We defined the features required at the top level of our test
 import sys
 import os
 from pathlib import Path
@@ -6,7 +5,7 @@ import pandas as pd
 
 import pytest
 
-# Needed for pytest to resolve imports properly
+# pytest를 적절히 임포트하기 위해 필요합니다.
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + "/../")
 
@@ -30,7 +29,7 @@ XML_PATH = Path("fixtures/MiniPosts.xml")
 CSV_PATH = Path("fixtures/MiniPosts.csv")
 
 
-# Make sure we have a csv
+# csv 파일을 확인합니다.
 @pytest.fixture(scope="session", autouse=True)
 def get_csv():
     parse_xml_to_csv(CURR_PATH / XML_PATH, save_path=CURR_PATH / CSV_PATH)

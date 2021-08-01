@@ -12,11 +12,11 @@ from ml_editor.model_v2 import add_v2_text_features
 
 def generate_model_text_features(raw_df_path, save_path=None):
     """
-    A function to generate features for model 2 and save them to disk.
-    These features take multiple minutes to compute
-    :param raw_df_path: path to raw DataFrame (generated from parse_xml_to_csv)
-    :param save_path: path to save processed DataFrame to
-    :return: processed DataFrame
+    모델 2를 위한 특성을 생성하고 디스크에 저장하는 함수
+    이 특성을 계산하는데 몇 분 정도 걸립니다.
+    :param raw_df_path: (parse_xml_to_csv에서 생성한) 원본 DataFrame 경로
+    :param save_path: 처리된 DataFrame을 저장할 경로
+    :return: 처리된 DataFrame
     """
     df = pd.read_csv(raw_df_path)
     df = format_raw_df(df.copy())
@@ -33,25 +33,25 @@ def generate_model_text_features(raw_df_path, save_path=None):
 
 def parse_xml_to_csv(path, save_path=None):
     """
-    Open .xml posts dump and convert the text to a csv, tokenizing it in the process
-    :param path: path to the xml document containing posts
-    :return: a dataframe of processed text
+    .xml 포스트 덤프를 열어 텍스트에서 csv로 변환합니다.
+    :param path: 포스트가 담긴 xml 문서의 경로
+    :return: 처리된 텍스트의 데이터프레임
     """
 
-    # Use python's standard library to parse XML file
+    # 파이썬의 표준 라이브러리로 XML 파일을 파싱합니다.
     doc = ElT.parse(path)
     root = doc.getroot()
 
-    # Each row is a question
+    # 각 행은 하나의 질문입니다.
     all_rows = [row.attrib for row in root.findall("row")]
 
-    # Using tdqm to display progress since preprocessing takes time
+    # tdqm을 사용해 전처리 과정을 표시합니다.
     for item in tqdm(all_rows):
-        # Decode text from HTML
+        # HTML에서 텍스트를 추출합니다.
         soup = BeautifulSoup(item["Body"], features="html.parser")
         item["body_text"] = soup.get_text()
 
-    # Create dataframe from our list of dictionaries
+    # 딕셔너리의 리스트에서 데이터프레임을 만듭니다.
     df = pd.DataFrame.from_dict(all_rows)
     if save_path:
         df.to_csv(save_path)
@@ -60,10 +60,10 @@ def parse_xml_to_csv(path, save_path=None):
 
 def get_data_from_dump(site_name, load_existing=True):
     """
-    load .xml dump, parse it to a csv, serialize it and return it
-    :param load_existing: should we load the existing extract or regenerate it
-    :param site_name: name of the stackexchange website
-    :return: pandas DataFrame of the parsed xml
+    .xml 덤프를 로드하고, 파싱하여 csv로 만들고, 직렬화한 다음 반환합니다.
+    :param load_existing: 기존에 추출한 csv를 로드할지 새로 생성할지 결정합니다.
+    :param site_name: 스택익스체인지 웹사이트 이름
+    :return: 파싱된 xml의 판다스 DataFrame
     """
     data_path = Path("data")
     dump_name = "%s.stackexchange.com/Posts.xml" % site_name

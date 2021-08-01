@@ -48,11 +48,11 @@ def preprocess_input(text):
 
 def compute_flesch_reading_ease(total_syllables, total_words, total_sentences):
     """
-    Computes readability score from summary statistics
-    :param total_syllables: number of syllables in input text
-    :param total_words: number of words in input text
-    :param total_sentences: number of sentences in input text
-    :return: A readability score: the lower the score, the more complex the text is deemed to be
+    요약 통계로부터 가독성 점수를 계산합니다.
+    :param total_syllables: 입력 텍스트에 있는 음절 개수
+    :param total_words: 입력 텍스트에 있는 단어 개수
+    :param total_sentences: 입력 텍스트에 있는 문장 개수
+    :return: A readability score: 점수가 낮을수록 더 복잡한 텍스트입니다.
     """
     return (
         206.85
@@ -63,9 +63,9 @@ def compute_flesch_reading_ease(total_syllables, total_words, total_sentences):
 
 def get_reading_level_from_flesch(flesch_score):
     """
-    Thresholds taken from https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests
+    https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests 에서 가져온 임곗값
     :param flesch_score:
-    :return: A reading level and difficulty for a given flesch score
+    :return: 플레시 점수에 대한 가독성 수준
     """
     if flesch_score < 30:
         return "매우 읽기 어려움"
@@ -85,9 +85,9 @@ def get_reading_level_from_flesch(flesch_score):
 
 def compute_average_word_length(tokens):
     """
-    Calculate word length for a sentence
-    :param tokens: a list of words
-    :return: The average length of words in this list
+    한 문장에 있는 단어의 길이를 계산합니다.
+    :param tokens: 단얼 리스트
+    :return: 리스트에 있는 단어의 평균 길이
     """
     word_lengths = [len(word) for word in tokens]
     return sum(word_lengths) / len(word_lengths)
@@ -95,9 +95,9 @@ def compute_average_word_length(tokens):
 
 def compute_total_average_word_length(sentence_list):
     """
-    Calculate average word length for multiple sentences
-    :param sentence_list: a list of sentences, each being a list of words
-    :return: The average length of words in this list of sentences
+    여러 문장에 대한 단어의 평균 길이를 계산합니다.
+    :param sentence_list: 단어의 리스트로 구성된 문장 리스트
+    :return: 문장 리스트에 있는 단어의 평균 길이
     """
     lengths = [compute_average_word_length(tokens) for tokens in sentence_list]
     return sum(lengths) / len(lengths)
@@ -105,9 +105,9 @@ def compute_total_average_word_length(sentence_list):
 
 def compute_total_unique_words_fraction(sentence_list):
     """
-    Compute fraction os unique words
-    :param sentence_list: a list of sentences, each being a list of words
-    :return: the fraction of unique words in the sentences
+    고유한 단어의 비율을 계산합니다.
+    :param sentence_list: 단어의 리스트로 구성된 문장 리스트
+    :return: 문장에 있는 고유한 단어의 비율
     """
     all_words = [word for word_list in sentence_list for word in word_list]
     unique_words = set(all_words)
@@ -116,33 +116,33 @@ def compute_total_unique_words_fraction(sentence_list):
 
 def count_word_usage(tokens, word_list):
     """
-    Counts occurrences of a given list of words
-    :param tokens: a list of tokens for one sentence
-    :param word_list: a list of words to search for
-    :return: the number of times the words appear in the list
+    주어진 단어 리스트의 등장 횟수
+    :param tokens: 한 문장의 토큰 리스트
+    :param word_list: 탐색하려는 단어 리스트
+    :return: 리스트에 등장하는 단어 횟수
     """
     return len([word for word in tokens if word.lower() in word_list])
 
 
 def count_word_syllables(word):
     """
-    Count syllables in a word
-    :param word: a one word string
-    :return: the number of syllables according to pyphen
+    단어에 있는 음절 횟수
+    :param word: 하나의 단어 문자열
+    :return: pyphen으로 구한 음절 개수
     """
     dic = pyphen.Pyphen(lang="en_US")
-    # this returns our word, with hyphens ("-") inserted in between each syllable
+    # 음절 사이에 하이픈("-")을 추가한 단어를 반환합니다.
     hyphenated = dic.inserted(word)
     return len(hyphenated.split("-"))
 
 
 def count_sentence_syllables(tokens):
     """
-    Count syllables in a sentence
-    :param tokens: a list of words and potentially punctuation
-    :return: the number of syllables in the sentence
+    문장에 있는 음절 개수를 셉니다.
+    :param tokens: 단어와 구둣점의 리스트
+    :return: 문장에 있는 음절 개수
     """
-    # Our tokenizer leaves punctuation as a separate word, so we filter for it here
+    # 토큰화 객체는 구둣점을 별도의 단어로 인식하기 때문에 여기서는 이를 필터링합니다.
     punctuation = ".,!?/"
     return sum(
         [
@@ -155,9 +155,9 @@ def count_sentence_syllables(tokens):
 
 def count_total_syllables(sentence_list):
     """
-    Count syllables in a list of sentences
-    :param sentence_list:  a list of sentences, each being a list of words
-    :return: the number of syllables in the sentences
+    문장 리스트에 있는 음절을 셉니다.
+    :param sentence_list: 단어의 리스트로 구성된 문장 리스트
+    :return: 문장에 있는 음절의 개수
     """
     return sum(
         [count_sentence_syllables(sentence) for sentence in sentence_list]
@@ -166,9 +166,9 @@ def count_total_syllables(sentence_list):
 
 def count_words_per_sentence(sentence_tokens):
     """
-    Count words in a sentence
-    :param sentence_tokens: a list of words and potentially punctuation
-    :return: the number of words in the sentence
+    문장에 있는 단어를 셉니다.
+    :param sentence_tokens: 단어와 구둣점의 리스트
+    :return: 문장에 있는 단어의 개수
     """
     punctuation = ".,!?/"
     return len([word for word in sentence_tokens if word not in punctuation])
@@ -176,9 +176,9 @@ def count_words_per_sentence(sentence_tokens):
 
 def count_total_words(sentence_list):
     """
-    Count words in a list of sentences
-    :param sentence_list: a list of sentences, each being a list of words
-    :return: the number of words in the sentences
+    문장 리스트에 있는 단어를 셉니다.
+    :param sentence_list: 단어의 리스트로 구성된 문장 리스트
+    :return: 문장에 있는 단어의 개수
     """
     return sum(
         [count_words_per_sentence(sentence) for sentence in sentence_list]
@@ -261,9 +261,9 @@ def get_suggestions(sentence_list):
 
 def get_recommendations_from_input(txt):
     """
-    Cleans, preprocesses, and generates heuristic suggestion for input string
-    :param txt: Input text
-    :return: Suggestions for a given text input
+    입력 문자열에 대해 정제, 전처리하고 경험 규칙 기반의 추천을 생성합니다.
+    :param txt: 입력 텍스트
+    :return: 주어진 텍스트 입력에 대한 추천
     """
     processed = clean_input(txt)
     tokenized_sentences = preprocess_input(processed)

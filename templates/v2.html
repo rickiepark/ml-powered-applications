@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>ML Editor</title>
+    <title>머신러닝 에디터</title>
   </head>
   <body>
 
@@ -15,21 +15,19 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
-    <h1>Welcome to the ML Editor!</h1>
-    <h2>Version 2: A quality score from a simple model</h2>
-    <p> This version of the ML Editor outputs a question quality score. This
-        score comes from a model trained to predict whether questions from
-        <a href="writers.stackexchange.com">writers.stackexchange.com</a>
-        would receive more upvotes than average. The questions in the dataset tend
-        to be on the longer side (multiple sentences per question),
-        so the model works best for longer examples.</p>
+    <h1>머신러닝 에디터에 오신 것을 환영합니다!</h1>
+    <h2>버전 2: 간단한 모델로 품질 점수를 계산합니다</h2>
+    <p> 이 버전의 머신러닝 에디터는 질문의 품질 점수를 출력하니다.
+        이 점수는 <a href="writers.stackexchange.com">writers.stackexchange.com</a>의 질문이
+        평균적으로 더 많은 찬성(upvote) 개수를 받을지 예측하기 위해 훈련된 모델에서 얻습니다.
+        이 데이터셋에 있는 질문은 (여러 개의 문장으로 구성되어) 긴 편이므로 샘플이 길 경우 잘 맞습니다.</p>
     <form action="" method="post">
         <div class="form-group">
-            <label for="question">Which question would you like to ask?</label>
+            <label for="question">질문할 내용을 입력해 주세요.</label>
             <textarea class="form-control" rows="5" name="question" ></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Get recommendation</button>
-        <a href="/" class="btn btn-primary">Back to main page</a>
+        <button type="submit" class="btn btn-primary">추천 요청</button>
+        <a href="/" class="btn btn-primary">메인 페이지로 돌아가기</a>
     </form>
 
   </body>

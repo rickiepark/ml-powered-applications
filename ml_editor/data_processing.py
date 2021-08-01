@@ -6,11 +6,11 @@ from scipy.sparse import vstack, hstack
 
 def format_raw_df(df):
     """
-    Cleanup data and join questions to answers
-    :param df: raw DataFrame
-    :return: processed DataFrame
+    데이터를 정제하고 질문과 대답을 합칩니다.
+    :param df: 원본 DataFrame
+    :return: 처리된 DataFrame
     """
-    # Fixing types and setting index
+    # 타입을 고치고 인덱스를 설정합니다.
     df["PostTypeId"] = df["PostTypeId"].astype(int)
     df["Id"] = df["Id"].astype(int)
     df["AnswerCount"] = df["AnswerCount"].fillna(-1)
@@ -21,10 +21,10 @@ def format_raw_df(df):
 
     df["is_question"] = df["PostTypeId"] == 1
 
-    # Filtering out PostTypeIds other than documented ones
+    # 문서화된 것 이외의 PostTypeId를 필터링합니다.
     df = df[df["PostTypeId"].isin([1, 2])]
 
-    # Linking questions and answers
+    # 질문과 대답을 연결합니다.
     df = df.join(
         df[["Id", "Title", "body_text", "Score", "AcceptedAnswerId"]],
         on="ParentId",
@@ -36,11 +36,10 @@ def format_raw_df(df):
 
 def train_vectorizer(df):
     """
-    Train a vectorizer for some data.
-    Returns the vectorizer to be used to transform non-training data, in
-    addition to the training vectors
-    :param df: data to use to train the vectorizer
-    :return: trained vectorizers and training vectors
+    벡터화 객체를 훈련합니다.
+    훈련 데이터와 그 외 데이터를 변환하는데 사용할 벡터화 객체를 반환합니다.
+    :param df: 벡터화 객체를 훈련하는데 사용할 데이터
+    :return: 훈련된 벡터화 객체
     """
     vectorizer = TfidfVectorizer(
         strip_accents="ascii", min_df=5, max_df=0.5, max_features=10000
@@ -52,10 +51,10 @@ def train_vectorizer(df):
 
 def get_vectorized_series(text_series, vectorizer):
     """
-    Vectorizes an input series using a pre-trained vectorizer
-    :param text_series: pandas Series of text
-    :param vectorizer: pretrained sklearn vectorizer
-    :return: array of vectorized features
+    사전 훈련된 벡터화 객체를 사용해 입력 시리즈를 벡터화합니다.
+    :param text_series: 텍스트의 판다스 시리즈
+    :param vectorizer: 사전 훈련된 sklearn의 벡터화 객체
+    :return: 벡터화된 특성 배열
     """
     vectors = vectorizer.transform(text_series)
     vectorized_series = [vectors[i] for i in range(vectors.shape[0])]
@@ -64,10 +63,9 @@ def get_vectorized_series(text_series, vectorizer):
 
 def add_text_features_to_df(df):
     """
-    Ads features to DataFrame
+    DataFrame에 특성을 추가합니다.
     :param df: DataFrame
-    :param pretrained_vectors: whether to use pretrained vectors for embeddings
-    :return: DataFrame with additional features
+    :return: 특성이 추가된 DataFrame
     """
     df["full_text"] = df["Title"].str.cat(df["body_text"], sep=" ", na_rep="")
     df = add_v1_features(df.copy())
@@ -77,9 +75,9 @@ def add_text_features_to_df(df):
 
 def add_v1_features(df):
     """
-    Add our first features to an input DataFrame
-    :param df: DataFrame of questions
-    :return: DataFrame with added feature columns
+    입력 DataFrame에 첫 번째 특성을 추가합니다.
+    :param df: 질문 DataFrame
+    :return: 특성이 추가된 DataFrame
     """
     df["action_verb_full"] = (
         df["full_text"].str.contains("can", regex=False)
@@ -98,9 +96,9 @@ def add_v1_features(df):
 
 def get_vectorized_inputs_and_label(df):
     """
-    Concatenate DataFrame features with text vectors
-    :param df: DataFrame with calculated features
-    :return: concatenated vector consisting of features and text
+    DataFrame 특성과 텍스트 벡터를 연결합니다.
+    :param df: 계산된 특성의 DataFrame
+    :return: 특성과 텍스트로 구성된 벡터
     """
     vectorized_features = np.append(
         np.vstack(df["vectors"]),
@@ -135,21 +133,21 @@ def get_feature_vector_and_label(df, feature_names):
 
 def get_normalized_series(df, col):
     """
-    Get a normalized version of a column
+    DataFrame 열을 정규화합니다.
     :param df: DataFrame
-    :param col: column name
-    :return: normalized series using Z-score
+    :param col: 열 이름
+    :return: Z-점수를 사용해 정규화된 시리즈 객체
     """
     return (df[col] - df[col].mean()) / df[col].std()
 
 
 def get_random_train_test_split(posts, test_size=0.3, random_state=40):
     """
-    Get train/test split from DataFrame
-    Assumes the DataFrame has one row per question example
-    :param posts: all posts, with their labels
-    :param test_size: the proportion to allocate to test
-    :param random_state: a random seed
+    DataFrame을 훈련/테스트 세트로 나눕니다.
+    DataFrame이 질문마다 하나의 행을 가진다고 가정합니다.
+    :param posts: 모든 포스트와 레이블
+    :param test_size: 테스트 세트로 할당할 비율
+    :param random_state: 랜덤 시드
     """
     return train_test_split(
         posts, test_size=test_size, random_state=random_state
@@ -160,12 +158,12 @@ def get_split_by_author(
     posts, author_id_column="OwnerUserId", test_size=0.3, random_state=40
 ):
     """
-    Get train/test split
-    Guarantee every author only appears in one of the splits
-    :param posts: all posts, with their labels
-    :param author_id_column: name of the column containing the author_id
-    :param test_size: the proportion to allocate to test
-    :param random_state: a random seed
+    훈련 세트와 테스트 세트로 나눕니다.
+    작성자가 두 세트 중에 하나에만 등장하는 것을 보장합니다.
+    :param posts: 모든 포스트와 레이블
+    :param author_id_column: author_id가 들어 있는 열 이름
+    :param test_size: 테스트 세트로 할당할 비율
+    :param random_state: 랜덤 시드
     """
     splitter = GroupShuffleSplit(
         n_splits=1, test_size=test_size, random_state=random_state

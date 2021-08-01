@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import pandas as pd
 
-# Needed for pytest to resolve imports properly
+# pytest를 적절히 임포트하기 위해 필요합니다.
 myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + "/../")
 
@@ -12,7 +12,7 @@ from ml_editor.data_ingestion import parse_xml_to_csv
 
 TEXT_LENGTH_FIELD = "text_len"
 
-# We defined the features required at the top level of our test
+# 테스트를 위해 필요한 특성을 정의합니다.
 REQUIRED_COLUMNS = [
     "Id",
     "AnswerCount",
@@ -24,7 +24,7 @@ REQUIRED_COLUMNS = [
     "Score",
 ]
 
-# Acceptable interval created based on data exploration
+# 데이터 탐색에 기반하여 만들어진 간격
 ACCEPTABLE_TEXT_LENGTH_MEANS = pd.Interval(left=20, right=2000)
 
 
@@ -65,7 +65,7 @@ def test_features_not_all_null():
 
 def test_text_mean():
     """
-    Validate that text mean matches with exploration expectations
+    텍스트 평균이 탐색 결과와 맞는지 검사합니다.
     """
     df = get_fixture_df()
     df["text_len"] = df["body_text"].str.len()

@@ -28,9 +28,9 @@ MODEL = joblib.load(curr_path / model_path)
 
 def get_features_from_input_text(text_input):
     """
-    Generates features for a unique text input
-    :param text_input: question string
-    :return: one row series containing v3 model features
+    고유한 텍스트 입력에 대해 특성을 생성합니다.
+    :param text_input: 질문 문자열
+    :return: 모델 v3 특성을 담고 있는 1행 시리즈
     """
     arr_features = get_features_from_text_array([text_input])
     return arr_features.iloc[0]
@@ -38,9 +38,9 @@ def get_features_from_input_text(text_input):
 
 def get_features_from_text_array(input_array):
     """
-    Generated features for an input array of text
-    :param input_array: array of input questions
-    :return: DataFrame of features
+    입력 텍스트 배열에 대해 특성을 생성합니다.
+    :param input_array: 입력 질문 배열
+    :return: 특성 DataFrame
     """
     text_ser = pd.DataFrame(input_array, columns=["full_text"])
     text_ser = add_v2_text_features(text_ser.copy())
@@ -50,9 +50,9 @@ def get_features_from_text_array(input_array):
 
 def get_model_probabilities_for_input_texts(text_array):
     """
-    Returns estimated v3 model probabilities from input text array
-    :param text_array: array of input questions
-    :return: array of predictions
+    입력 텍스트 배열에 대한 모델 v3의 추정 확률을 반환합니다.
+    :param text_array: 입력 질문 배열
+    :return: 예측 배열
     """
     global MODEL
     features = get_features_from_text_array(text_array)
@@ -61,9 +61,9 @@ def get_model_probabilities_for_input_texts(text_array):
 
 def get_question_score_from_input(text):
     """
-    Returns v3 model probability for a unique text input
-    :param text: input string
-    :return: estimated probability of question receiving a high score
+    고유한 텍스트 입력에 대해 모델 v3의 확률을 반환합니다.
+    :param text: 입력 문자열
+    :return: 높은 점수를 받는 질문의 예측 확률
     """
     preds = get_model_probabilities_for_input_texts([text])
     positive_proba = preds[0][1]
@@ -72,30 +72,30 @@ def get_question_score_from_input(text):
 
 def get_recommendation_and_prediction_from_text(input_text, num_feats=10):
     """
-    Gets a score and recommendations that can be displayed in the Flask app
-    :param input_text: input string
-    :param num_feats: number of features to suggest recommendations for
-    :return: current score along with recommendations
+    플래스크 앱에 출력할 점수와 추천을 구합니다.
+    :param input_text: 입력 문자열
+    :param num_feats: 추천으로 제시한 특성 개수
+    :return: 추천과 현재 점수
     """
     global MODEL
     feats = get_features_from_input_text(input_text)
 
     pos_score = MODEL.predict_proba([feats])[0][1]
-    print("explaining")
+    print("설명")
     exp = EXPLAINER.explain_instance(
         feats, MODEL.predict_proba, num_features=num_feats, labels=(1,)
     )
-    print("explaining done")
+    print("설명 끝")
     parsed_exps = parse_explanations(exp.as_list())
     recs = get_recommendation_string_from_parsed_exps(parsed_exps)
     output_str = """
-    Current score (0 is worst, 1 is best):
+    현재 점수 (0은 최악, 1은 최상):
      <br/>
      %s
     <br/>
     <br/>
 
-    Recommendations (ordered by importance):
+    추천 (중요도 순서):
     <br/>
     <br/>
     %s

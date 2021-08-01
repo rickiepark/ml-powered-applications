@@ -62,9 +62,9 @@ MODEL = None
 
 def count_each_pos(df):
     """
-    Count occurrences of each part of speech, and add it do an input DataFrame
-    :param df: input DataFrame containing text that has been passed to SPACY_MODEL
-    :return: DataFrame with occurrence counts
+    품사의 등장 횟수를 세어 입력 DataFrame에 추가합니다.
+    :param df: SPACY_MODEL로 전달된 텍스트를 담고 있는 입력 DataFrame
+    :return: 등장 회수가 포함된 DataFrame
     """
     global POS_NAMES
     pos_list = df["spacy_text"].apply(lambda doc: [token.pos_ for token in doc])
@@ -80,9 +80,9 @@ def count_each_pos(df):
 
 def get_word_stats(df):
     """
-    Adds statistical features such as word counts to a DataFrame
-    :param df: DataFrame containing a full_text column with training questions
-    :return: DataFrame with new feature columns
+    단어 카운트 같은 통계적 특성을 DataFrame에 추가합니다.
+    :param df: 훈련 세트의 질문을 full_text 열에 담고 있는 DataFrame
+    :return: 새로운 열이 추가된 DataFrame
     """
     global SPACY_MODEL
     df["spacy_text"] = df["full_text"].progress_apply(lambda x: SPACY_MODEL(x))
@@ -105,9 +105,9 @@ def get_word_stats(df):
 
 def get_avg_wd_len(tokens):
     """
-    Returns average word length for a list of words
-    :param tokens: array of words
-    :return: average number of characters per word
+    단어 리스트가 주어지면 단어의 평균 길이를 반환합니다.
+    :param tokens: 단어 배열
+    :return: 단어 당 평균 문자 개수
     """
     if len(tokens) < 1:
         return 0
@@ -117,9 +117,9 @@ def get_avg_wd_len(tokens):
 
 def add_char_count_features(df):
     """
-    Adds counts of punctuation characters to a DataFrame
-    :param df: DataFrame containing a full_text column with training questions
-    :return: DataFrame with counts
+    구둣점 문자 개수를 DataFrame에 추가합니다.
+    :param df: 훈련 세트의 질문을 full_text 열에 담고 있는 DataFrame
+    :return: 카운트가 추가된 DataFrame
     """
     df["num_chars"] = df["full_text"].str.len()
 
@@ -135,9 +135,9 @@ def add_char_count_features(df):
 
 def get_sentiment_score(df):
     """
-    Uses nltk to return a polarity score for an input question
-    :param df: DataFrame containing a full_text column with training questions
-    :return: DataFrame with a polarity column
+    nltk를 사용해 입력 질문의 극성 점수(polarity score)를 반환합니다.
+    :param df: 훈련 세트의 질문을 full_text 열에 담고 있는 DataFrame
+    :return: 극성 점수가 추가된 DataFrame
     """
     sid = SentimentIntensityAnalyzer()
     df["polarity"] = df["full_text"].progress_apply(
@@ -148,9 +148,9 @@ def get_sentiment_score(df):
 
 def add_v2_text_features(df):
     """
-    Adds multiple features used by the v2 model to a DataFrame
-    :param df: DataFrame containing a full_text column with training questions
-    :return: DataFrame with feature columns added
+    모델 v2에 사용할 여러 특성을 DataFrame에 추가합니다.
+    :param df: 훈련 세트의 질문을 full_text 열에 담고 있는 DataFrame
+    :return: 특성 열이 추가된 DataFrame
     """
     df = add_char_count_features(df.copy())
     df = get_word_stats(df.copy())
@@ -160,11 +160,10 @@ def add_v2_text_features(df):
 
 def get_model_probabilities_for_input_texts(text_array):
     """
-    Returns an array of probability scores representing
-    the likelihood of a question receiving a high score
-    format is: [ [prob_low_score1, prob_high_score_1], ... ]
-    :param text_array: array of questions to be scored
-    :return: array of predicted probabilities
+    질문이 높은 점수를 받을 가능성을 나타내는 확률 점수의 배열을 반환합니다.
+    포맷: [ [prob_low_score1, prob_high_score_1], ... ]
+    :param text_array: 점수를 매길 질문의 배열
+    :return: 예측 확률 배열
     """
     global FEATURE_ARR, VECTORIZER, MODEL, curr_path, vectorizer_path, model_path
     if VECTORIZER == None:
@@ -182,9 +181,9 @@ def get_model_probabilities_for_input_texts(text_array):
 
 def get_question_score_from_input(text):
     """
-    Helper method to get the probability for the positive class for one example question
-    :param text: input string
-    :return: estimated probability of question receiving a high score
+    하나의 샘플 질문에 대한 양성 클래스의 확률을 얻기 위한 헬퍼 함수
+    :param text: 입력 문자열
+    :return: 높은 점수를 받는 질문의 예측 확률
     """
     preds = get_model_probabilities_for_input_texts([text])
     positive_proba = preds[0][1]
@@ -193,14 +192,14 @@ def get_question_score_from_input(text):
 
 def get_pos_score_from_text(input_text):
     """
-    Gets a score that can be displayed in the Flask app
-    :param input_text: input string
-    :return: estimated probability of question receiving a high score
+    플래스크 앱에 출력할 점수를 구합니다.
+    :param input_text: 입력 문자열
+    :return: 높은 점수를 받는 질문의 예측 확률
     """
     positive_proba = get_question_score_from_input(input_text)
     output_str = (
         """
-        Question score (0 is worst, 1 is best):
+        질문 점수 (0는 최악, 1은 최상):
         <br/>
         %s
     """

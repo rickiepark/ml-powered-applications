@@ -107,8 +107,8 @@ lstm.fit(text_input, labels)
 
 def benchmark_inference(to_benchmark):
     """
-    Run inference on a trained model
-    :param to_benchmark: a model to benchmark
+    훈련된 모델의 추론을 실행합니다.
+    :param to_benchmark: 벤치마킹할 모델
     """
     to_benchmark.predict(text_input)
 
@@ -117,9 +117,8 @@ if __name__ == "__main__":
     setup = """
 from __main__ import benchmark_inference, counts, glove, lstm, text_input, labels
     """
-
-    # We run inference multiple times on each model and take the fastest run
-    # This helps reduce the impact of slowdowns due to other processes
+    # 각 모델에서 여러 번 추론을 실행하여 가장 빠른 것을 선택합니다.
+    # 다른 처리 과정으로 인한 속도 저하의 영향을 감소시키는데 도움이 됩니다.
     print("Timing count vectors (ms)")
     print(
         min(

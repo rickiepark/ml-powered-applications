@@ -1,5 +1,5 @@
-"""inference.py: This module contains function stubs serving as book examples.
-The functions are not used for the ml_editor app or notebook
+"""inference.py: 이 모듈을 책의 예제를 서빙하기 위한 스텁(stub) 함수를 담고 있습니다.
+이 함수는 ml_editor나 노트북에서 사용되지 않습니다.
 """
 
 from functools import lru_cache
@@ -43,45 +43,44 @@ def run_heuristic(question_len):
 @lru_cache(maxsize=128)
 def run_model(question_data):
     """
-    This is a stub function. We actually use the lru_cache with a purpose
-    in app.py
+    스텁 함수입니다. 실제로 app.py에서 lru_cache를 사용합니다.
     :param question_data:
     """
-    # Insert any slow model inference below
+    # 아래 느린 모델 추론을 추가하세요.
     pass
 
 
 def validate_and_handle_request(question_data):
     missing = find_absent_features(question_data)
     if len(missing) > 0:
-        raise ValueError("Missing feature(s) %s" % missing)
+        raise ValueError("누락된 특성: %s" % missing)
 
     wrong_types = check_feature_types(question_data)
     if len(wrong_types) > 0:
-        # If data is wrong but we have the length of the question, run heuristic
+        # 데이터가 잘못되었지만 질문의 길이가 있다면 경험 규칙을 실행합니다.
         if "text_len" in question_data.keys():
             if isinstance(question_data["text_len"], float):
                 return run_heuristic(question_data["text_len"])
-        raise ValueError("Incorrect type(s) %s" % wrong_types)
+        raise ValueError("잘못된 타입: %s" % wrong_types)
 
     return run_model(question_data)
 
 
 def verify_output_type_and_range(output):
     if not isinstance(output, float):
-        raise ValueError("Wrong output type %s, %s" % (output, type(output)))
+        raise ValueError("잘못된 출력 타입: %s, %s" % (output, type(output)))
     if not 0 < output < 1:
-        raise ValueError("Output out of range %s, %s" % output)
+        raise ValueError("범위 밖의 출력: %s" % output)
 
 
 def validate_and_correct_output(question_data, model_output):
-    # Verify type and range and raise errors accordingly
+    # 타입과 범위를 검사해 적절히 에러를 발생시킵니다.
     try:
-        # Raises value error if model output is incorrect
+        # 모델 출력이 잘못되면 에러를 발생시킵니다.
         verify_output_type_and_range(model_output)
     except ValueError:
-        # We run a heuristic, but could run a different model here
+        # 경험 규칙을 실행하지만 다른 모델을 실행할 수도 있습니다.
         run_heuristic(question_data["text_len"])
 
-    # If we did not raise an error, we return our model result
+    # 에러가 발생되지 않으면 모델 결과를 반환합니다.
     return model_output

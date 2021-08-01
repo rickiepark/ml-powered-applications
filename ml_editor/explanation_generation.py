@@ -78,9 +78,9 @@ FEATURE_ARR.extend(POS_NAMES.keys())
 
 def get_explainer():
     """
-    Prepare LIME explainer using our training data. This is fast enough that
-    we do not bother with serializing it
-    :return: LIME explainer object
+    훈련 데이터를 사용해 LIME 설명 도구를 준비합니다.
+    직렬화하지 않아도 될만큼 충분히 빠릅니다.
+    :return: LIME 설명 도구 객체
     """
     curr_path = Path(os.path.dirname(__file__))
     data_path = Path("../data/writers_with_features.csv")
@@ -99,9 +99,9 @@ EXPLAINER = get_explainer()
 
 def simplify_order_sign(order_sign):
     """
-    Simplify signs to make display clearer for users
-    :param order_sign: Input comparison operator
-    :return: Simplifier operator
+    사용자에게 명확한 출력을 위해 기호를 단순화합니다.
+    :param order_sign: 비교 연산자 입력
+    :return: 단순화된 연산자
     """
     if order_sign in ["<=", "<"]:
         return "<"
@@ -112,29 +112,29 @@ def simplify_order_sign(order_sign):
 
 def get_recommended_modification(simple_order, impact):
     """
-    Generate a recommendation string from an operator and the type of impact
-    :param simple_order: simplified operator
-    :param impact: whether the change has positive or negative impact
-    :return: formatted recommendation string
+    연산자와 영향 타입에 따라 추천 문장을 생성합니다.
+    :param simple_order: 단순화된 연산자
+    :param impact: 변화가 긍정적인지 부정적인지 여부
+    :return: 추천 문자열
     """
     bigger_than_threshold = simple_order == ">"
     has_positive_impact = impact > 0
 
     if bigger_than_threshold and has_positive_impact:
-        return "No need to decrease"
+        return "높일 필요가 없습니다"
     if not bigger_than_threshold and not has_positive_impact:
-        return "Increase"
+        return "높이세요"
     if bigger_than_threshold and not has_positive_impact:
-        return "Decrease"
+        return "낮추세요"
     if not bigger_than_threshold and has_positive_impact:
-        return "No need to increase"
+        return "낮출 필요가 없습니다"
 
 
 def parse_explanations(exp_list):
     """
-    Parse explanations returned by LIME into a user readable format
-    :param exp_list: explanations returned by LIME explainer
-    :return: array of dictionaries containing user facing strings
+    LIME이 반환한 설명을 사용자가 읽을 수 있도록 파싱합니다.
+    :param exp_list: LIME 설명 도구가 반환한 설명
+    :return: 사용자에게 전달한 문자열을 담은 딕셔너리 배열
     """
     parsed_exps = []
     for feat_bound, impact in exp_list:
@@ -163,9 +163,9 @@ def parse_explanations(exp_list):
 
 def get_recommendation_string_from_parsed_exps(exp_list):
     """
-    Generate recommendation text we can display on a flask app
-    :param exp_list: array of dictionaries containing explanations
-    :return: HTML displayable recommendation text
+    플래스크 앱에서 출력할 수 있는 추천 텍스트를 생성합니다.
+    :param exp_list: 설명을 담은 딕셔너리의 배열
+    :return: HTML 추천 텍스트
     """
     recommendations = []
     for i, feature_exp in enumerate(exp_list):

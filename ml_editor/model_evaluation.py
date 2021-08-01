@@ -24,16 +24,16 @@ def get_confusion_matrix_plot(
     figsize=(10, 10),
 ):
     """
-    Inspired by sklearn example
-    https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
-    :param figsize: size of the output figure
-    :param predicted_y: model's predicted values
-    :param true_y:  true value of the labels
-    :param classes: names of both classes
-    :param normalize: should we normalize the plot
-    :param title: plot title
-    :param cmap: colormap to use
-    :return: plot for the confusion matrix
+    sklearn의
+    https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html 예제 참조
+    :param figsize: 출력 그림 크기
+    :param predicted_y: 모델의 예측값
+    :param true_y:  진짜 레이블 값
+    :param classes: 양쪽 클래스 이름
+    :param normalize: 그래프를 정규화할지 여부
+    :param title: 그래프 제목
+    :param cmap: 사용할 컬러맵
+    :return: 오차 행렬 그래프
     """
     if classes is None:
         classes = ["Low quality", "High quality"]
@@ -76,14 +76,14 @@ def get_roc_plot(
     predicted_proba_y, true_y, tpr_bar=-1, fpr_bar=-1, figsize=(10, 10)
 ):
     """
-    Inspired by sklearn example
-    https://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html
-    :param fpr_bar: A threshold false positive value to draw
-    :param tpr_bar: A threshold false negative value to draw
-    :param figsize: size of the output figure
-    :param predicted_proba_y: the predicted probabilities of our model for each example
-    :param true_y: the true value of the label
-    :return:roc plot
+    sklearn의
+    https://scikit-learn.org/stable/auto_examples/model_selection/plot_roc_crossval.html 예제 참조
+    :param fpr_bar: 거짓 양성의 임곗값
+    :param tpr_bar: 거짓 음성의 임곗값
+    :param figsize: 출력 그림의 크기
+    :param predicted_proba_y: 각 샘플에 대한 모델의 예측 확률
+    :param true_y: 레이블의 진짜 값
+    :return: ROC 그래프
     """
     fpr, tpr, thresholds = roc_curve(true_y, predicted_proba_y)
     roc_auc = auc(fpr, tpr)
@@ -152,12 +152,12 @@ def get_roc_plot(
 
 def get_calibration_plot(predicted_proba_y, true_y, figsize=(10, 10)):
     """
-    Inspired by sklearn example
-    https://scikit-learn.org/stable/auto_examples/calibration/plot_calibration_curve.html
-    :param figsize: size of the output figure
-    :param predicted_proba_y: the predicted probabilities of our model for each example
-    :param true_y: the true value of the label
-    :return: calibration plot
+    sklearn의
+    https://scikit-learn.org/stable/auto_examples/calibration/plot_calibration_curve.html 예제 참조.
+    :param figsize: 출력 그래프의 크기
+    :param predicted_proba_y: 각 샘플에 대한 모델의 예측 확률
+    :param true_y: 레이블의 진짜 값
+    :return: 보정 그래프
     """
 
     plt.figure(figsize=figsize)
@@ -207,35 +207,34 @@ def get_calibration_plot(predicted_proba_y, true_y, figsize=(10, 10)):
 
 def get_metrics(predicted_y, true_y):
     """
-    Get standard metrics for binary classification
-    :param predicted_y: model's predicted values
-    :param true_y:  true value of the labels
+    이진 분류를 위한 표준 지표를 구합니다.
+    :param predicted_y: 모델의 예측 값
+    :param true_y: 레이블의 진짜 값
     :return:
     """
-    # true positives / (true positives+false positives)
+    # 진짜 양성 / (진짜 양성 + 가짜 양성)
     precision = precision_score(
         true_y, predicted_y, pos_label=None, average="weighted"
     )
-    # true positives / (true positives + false negatives)
+    # 진짜 양성 / (진짜 양성 + 가짜 음성)
     recall = recall_score(
         true_y, predicted_y, pos_label=None, average="weighted"
     )
 
-    # harmonic mean of precision and recall
+    # 정밀도와 재현율의 조화 평균
     f1 = f1_score(true_y, predicted_y, pos_label=None, average="weighted")
 
-    # true positives + true negatives/ total
+    # 진짜 양성 + 진짜 음성 / 전체
     accuracy = accuracy_score(true_y, predicted_y)
     return accuracy, precision, recall, f1
 
 
 def get_feature_importance(clf, feature_names):
     """
-    Get a list of feature importances for a classifier
-    :param clf: a scikit-learn classifier
-    :param feature_names: a list of the names of features
-    in the order they were given to the classifier
-    :return: sorted list of tuples of the form (feat_name, score)
+    분류기를 위한 특성 중요도의 리스트 구하기
+    :param clf: scikit-learn 분류기
+    :param feature_names: 특성 이름 리스트
+    :return: (특성 이름, 점수) 형태의 정렬된 튜플 리스트
     """
     importances = clf.feature_importances_
     indices_sorted_by_importance = np.argsort(importances)[::-1]
@@ -249,14 +248,13 @@ def get_feature_importance(clf, feature_names):
 
 def get_top_k(df, proba_col, true_label_col, k=5, decision_threshold=0.5):
     """
-    For binary classification problems
-    Returns k most correct and incorrect example for each class
-    Also returns k most unsure examples
-    :param df: DataFrame containing predictions, and true labels
-    :param proba_col: column name of predicted probabilities
-    :param true_label_col: column name of true labels
-    :param k: number of examples to show for each category
-    :param decision_threshold: classifier decision boundary to classify as positive
+    이진 분류 문제를 위해 각 클래스 별로 가장 올바른 k개 샘플과 가장 잘못된 k개 샘플을 반환합니다.
+    또한 가장 불확실한 k개 샘플을 반환합니다.
+    :param df: 예측과 진짜 레이블을 담고 있는 DataFrame
+    :param proba_col: 예측 확률의 열 이름
+    :param true_label_col: 진짜 레이블의 열 이름
+    :param k: 각 카테고리에 대해 추출할 샘플 개수
+    :param decision_threshold: 양성으로 분류하는 분류기 결정 경계
     :return: correct_pos, correct_neg, incorrect_pos, incorrect_neg, unsure
     """
     # Get correct and incorrect predictions
@@ -281,7 +279,7 @@ def get_top_k(df, proba_col, true_label_col, k=5, decision_threshold=0.5):
         k, proba_col
     )
 
-    # Get closest examples to decision threshold
+    # 결정 경계에 가자 가까운 샘플을 구합니다.
     most_uncertain = df.iloc[
         (df[proba_col] - decision_threshold).abs().argsort()[:k]
     ]

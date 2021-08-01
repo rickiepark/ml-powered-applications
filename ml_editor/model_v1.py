@@ -24,11 +24,10 @@ MODEL = joblib.load(curr_path / model_path)
 
 def get_model_probabilities_for_input_texts(text_array):
     """
-    Returns an array of probability scores representing
-    the likelihood of a question receiving a high score
-    format is: [ [prob_low_score1, prob_high_score_1], ... ]
-    :param text_array: array of questions to be scored
-    :return: array of predicted probabilities
+    질문이 높은 점수를 받을 가능성을 나타내는 확률 점수의 배열을 반환합니다.
+    포맷: [ [prob_low_score1, prob_high_score_1], ... ]
+    :param text_array: 점수를 매길 질문의 배열
+    :return: 예측 확률 배열
     """
     global FEATURE_ARR, VECTORIZER, MODEL
     vectors = VECTORIZER.transform(text_array)
@@ -42,11 +41,11 @@ def get_model_probabilities_for_input_texts(text_array):
 
 def get_model_predictions_for_input_texts(text_array):
     """
-    Returns an array of labels for a given array of questions
-    True represents high scores, False low scores
-    format is: [ False, True, ...]
-    :param text_array:  array of questions to be classified
-    :return: array of classes
+    질문 배열에 대한 레이블 배열을 반환합니다.
+    True는 높은 점수, False는 낮은 점수입니다.
+    포맷: [ False, True, ...]
+    :param text_array:  분류할 질문의 배열
+    :return: 클래스 배열
     """
     probs = get_model_probabilities_for_input_texts(text_array)
     predicted_classes = probs[:, 0] < probs[:, 1]

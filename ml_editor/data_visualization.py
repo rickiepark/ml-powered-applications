@@ -4,9 +4,9 @@ from matplotlib.patches import Rectangle
 
 def plot_embeddings(embeddings, sent_labels):
     """
-    Plot embeddings, colored by sentence label
-    :param embeddings: two dimensional embeddings
-    :param sent_labels: labels to display
+    문장 레이블에 따라 색을 입힌 임베딩 그래프 그리기
+    :param embeddings: 2차원 임베딩
+    :param sent_labels: 출력할 레이블
     """
     fig = plt.figure(figsize=(16, 10))
     color_map = {True: "#1f77b4", False: "#ff7f0e"}
